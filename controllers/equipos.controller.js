@@ -30,10 +30,10 @@ exports.createEquipo = async (req, res) => {
 
   try {
     const [result] = await pool.query(
-      `INSERT INTO equipos 
-       (img, titulo, detalle, pdf, create_at, update_at)
-       VALUES (?, ?, ?, ?, NOW(), NOW())`,
-      [img, titulo, detalle, pdf]
+  `INSERT INTO equipos 
+   (img, titulo, detalle, pdf, tipo, create_at, update_at)
+   VALUES (?, ?, ?, ?, ?, NOW(), NOW())`,
+  [img, titulo, detalle, pdf, req.body.tipo]
     );
     res.status(201).json({ id: result.insertId });
   } catch (error) {
@@ -48,7 +48,7 @@ exports.updateEquipo = async (req, res) => {
 
   try {
     await pool.query("UPDATE equipos SET ? , update_at = NOW() WHERE id = ?", [
-      data,
+      { ...data, tipo: data.tipo },
       id,
     ]);
     res.json({ message: "Equipo actualizado correctamente" });
