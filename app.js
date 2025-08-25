@@ -9,8 +9,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/usuarios', usuariosRoutes);
-app.use('/api/equipos', equiposRoutes);
+app.use('/apiCatalogo/usuarios', usuariosRoutes);
+app.use('/apiCatalogo/equipos', equiposRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
