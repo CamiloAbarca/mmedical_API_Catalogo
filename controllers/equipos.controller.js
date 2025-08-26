@@ -26,14 +26,22 @@ exports.getEquipoById = async (req, res) => {
 
 // Crear un equipo
 exports.createEquipo = async (req, res) => {
-  const { img, titulo, detalle, pdf } = req.body;
+  const { titulo, detalle, tipo } = req.body;
+  let img = null;
+  let pdf = null;
+  if (req.files && req.files.img && req.files.img[0]) {
+    img = req.files.img[0].filename;
+  }
+  if (req.files && req.files.pdf && req.files.pdf[0]) {
+    pdf = req.files.pdf[0].filename;
+  }
 
   try {
     const [result] = await pool.query(
       `INSERT INTO equipos 
    (img, titulo, detalle, pdf, tipo, created_at, updated_at)
    VALUES (?, ?, ?, ?, ?, NOW(), NOW())`,
-      [img, titulo, detalle, pdf, req.body.tipo]
+  [img, titulo, detalle, pdf, tipo]
     );
     res.status(201).json({ id: result.insertId });
   } catch (error) {
@@ -44,7 +52,13 @@ exports.createEquipo = async (req, res) => {
 // Actualizar un equipo
 exports.updateEquipo = async (req, res) => {
   const { id } = req.params;
-  const data = req.body;
+  const data = { ...req.body };
+  if (req.files && req.files.img && req.files.img[0]) {
+    data.img = req.files.img[0].filename;
+  }
+  if (req.files && req.files.pdf && req.files.pdf[0]) {
+    data.pdf = req.files.pdf[0].filename;
+  }
 
   try {
     await pool.query("UPDATE equipos SET ? , updated_at = NOW() WHERE id = ?", [
