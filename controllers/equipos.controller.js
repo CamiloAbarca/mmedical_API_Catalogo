@@ -47,7 +47,7 @@ exports.updateEquipo = async (req, res) => {
   const data = req.body;
 
   try {
-    await pool.query("UPDATE equipos SET ? , update_at = NOW() WHERE id = ?", [
+    await pool.query("UPDATE equipos SET ? , updated_at = NOW() WHERE id = ?", [
       { ...data, tipo: data.tipo },
       id,
     ]);
