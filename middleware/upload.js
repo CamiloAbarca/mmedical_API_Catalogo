@@ -1,28 +1,30 @@
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const path = require("path");
+
+const UPLOADS_PATH = "/home/enaviacl/public_html/mmedical/uploads";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, UPLOADS_PATH);
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
-    cb(null, Date.now() + '-' + file.fieldname + ext);
-  }
+    cb(null, Date.now() + "-" + file.fieldname + ext);
+  },
 });
 
 const fileFilter = (req, file, cb) => {
-  if (file.fieldname === 'img') {
-    if (file.mimetype.startsWith('image/')) {
+  if (file.fieldname === "img") {
+    if (file.mimetype.startsWith("image/")) {
       cb(null, true);
     } else {
-      cb(new Error('Solo se permiten imágenes en el campo img'), false);
+      cb(new Error("Solo se permiten imágenes en el campo img"), false);
     }
-  } else if (file.fieldname === 'pdf') {
-    if (file.mimetype === 'application/pdf') {
+  } else if (file.fieldname === "pdf") {
+    if (file.mimetype === "application/pdf") {
       cb(null, true);
     } else {
-      cb(new Error('Solo se permiten PDFs en el campo pdf'), false);
+      cb(new Error("Solo se permiten PDFs en el campo pdf"), false);
     }
   } else {
     cb(null, false);
